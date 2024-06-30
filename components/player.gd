@@ -24,7 +24,7 @@ func _update_input_axis():
 	axis.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
 	return axis.normalized()
 
-func _apply_friction(amount):
+func _apply_friction(amount: float):
 	if velocity.length() > amount:
 		velocity -= velocity.normalized() * amount
 	else:
@@ -76,13 +76,13 @@ func _play_direction_idle_animation():
 		Direction.LEFT:
 			animator.play("idle_left")
 
-func apply_movement(acceleration):
+func apply_movement(acceleration: Vector2):
 	velocity += acceleration
 	velocity = velocity.limit_length(MAX_SPEED)
 	_play_axis_move_animation()
 
 var was_moving = false
-func _move(delta):
+func _move(delta: float):
 	axis = _update_input_axis()
 	
 	if axis == Vector2.ZERO:
@@ -96,6 +96,21 @@ func _move(delta):
 	
 	move_and_slide()
 
+func teleport_to(position: Vector2):
+	self.global_position = position
+
+func teleport_to_location(name: String):
+	var locations = get_tree().get_nodes_in_group("location")
+	for it in locations:
+		if it.name == name:
+			teleport_to((it as Node2D).global_position)
+			return
+	for it in locations:
+		if it.has_method("get_location_name") and it.get_location_name() == name:
+			teleport_to((it as Node2D).global_position)
+			return
+	print_debug("Player unable to find location: " + name)
+
 func can_interact(with: Node2D):
 	var distance_to_position = global_position.distance_to(with.global_position)
 	return distance_to_position <= interaction_distance
@@ -104,7 +119,7 @@ func _update_interaction(delta):
 	if Input.is_action_pressed("interact"):
 		interact.emit(selection)
 
-func _physics_process(delta):
+func _physics_process(delta: float):
 	_move(delta)
 	if selection != null:
 		_update_interaction(delta)

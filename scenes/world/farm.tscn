@@ -27,7 +27,7 @@ format = 2
 position = Vector2(329, 196)
 
 [node name="TownExit" parent="." instance=ExtResource("3_dl6k4")]
-position = Vector2(456, 4)
+position = Vector2(456, 0)
 portal_name = "town"
-target_portal = "home"
-target_location = "town"
+target_location = "farm"
+target_map = "town"

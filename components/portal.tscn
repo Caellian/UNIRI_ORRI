@@ -23,7 +23,7 @@ func _draw():
 	draw_colored_polygon(points, COLOR)
 "
 
-[node name="Portal" type="Node2D"]
+[node name="Portal" type="Node2D" groups=["location"]]
 script = ExtResource("1_whwxu")
 
 [node name="InteractiveArea" type="Area2D" parent="."]
@@ -43,3 +43,4 @@ script = SubResource("GDScript_3tvhn")
 COLOR = Color(1, 0.377991, 0.31005, 1)
 
 [connection signal="body_entered" from="InteractiveArea" to="." method="_on_enter"]
+[connection signal="body_exited" from="InteractiveArea" to="." method="_on_leave"]
