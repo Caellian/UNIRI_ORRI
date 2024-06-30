@@ -1,7 +1,10 @@
 extends Area2D
 
+var parent: Node2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	parent = self.get_parent()
 	var player_selection = get_node("/root/Game/%Player")
 	player_selection.interact.connect(_on_interact)
 

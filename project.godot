@@ -23,6 +23,10 @@ Globals="*res://scenes/globals.tscn"
 
 window/stretch/scale_mode="integer"
 
+[editor_plugins]
+
+enabled=PackedStringArray()
+
 [input]
 
 move_left={
@@ -59,4 +63,4 @@ interact={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.321569, 0, 0.32549, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

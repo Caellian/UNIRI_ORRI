@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://5omvdhjbmn0h"]
+
+[ext_resource type="Script" path="res://components/plant_area.gd" id="1_vtg3l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sivri"]
+size = Vector2(314, 150)
+
+[node name="PlantArea" type="Area2D" groups=["interactable"]]
+position = Vector2(327, 215)
+script = ExtResource("1_vtg3l")
+
+[node name="Surface" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sivri")

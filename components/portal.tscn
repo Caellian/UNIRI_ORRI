@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcb68lifqk65s"]
+
+[ext_resource type="Script" path="res://components/portal.gd" id="1_whwxu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h4pab"]
+size = Vector2(16, 8)
+
+[sub_resource type="GDScript" id="GDScript_3tvhn"]
+script/source = "@tool
+extends Node2D
+
+@export
+var COLOR: Color = Color.RED
+	
+func _draw():
+	if !Engine.is_editor_hint():
+		return
+	var points = PackedVector2Array([
+		Vector2(-4, 0),
+		Vector2(4, 0),
+		Vector2(0, -4),
+	])
+	draw_colored_polygon(points, COLOR)
+"
+
+[node name="Portal" type="Node2D"]
+script = ExtResource("1_whwxu")
+
+[node name="InteractiveArea" type="Area2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="InteractiveArea"]
+shape = SubResource("RectangleShape2D_h4pab")
+
+[node name="EnterMarker" type="Node2D" parent="."]
+position = Vector2(0, -4)
+rotation = 3.14159
+script = SubResource("GDScript_3tvhn")
+COLOR = Color(0, 0.998713, 0.451441, 1)
+
+[node name="ExitMarker" type="Node2D" parent="."]
+position = Vector2(0, 4)
+script = SubResource("GDScript_3tvhn")
+COLOR = Color(1, 0.377991, 0.31005, 1)
+
+[connection signal="body_entered" from="InteractiveArea" to="." method="_on_enter"]

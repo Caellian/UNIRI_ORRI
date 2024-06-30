@@ -1,16 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://8t6020m32s5u"]
+[gd_scene load_steps=3 format=3 uid="uid://8t6020m32s5u"]
 
 [ext_resource type="PackedScene" uid="uid://c33khjo4phyqk" path="res://scenes/world/farm.tscn" id="1_uhod8"]
-[ext_resource type="Script" path="res://script/globals.gd" id="1_ydlda"]
 [ext_resource type="PackedScene" uid="uid://c2ms70qpkqtjh" path="res://components/player.res" id="2_6k1l5"]
 
 [node name="Game" type="Node"]
 
-[node name="Globals" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("1_ydlda")
-
-[node name="Farm" parent="." instance=ExtResource("1_uhod8")]
+[node name="Map" parent="." instance=ExtResource("1_uhod8")]
 
 [node name="Player" parent="." instance=ExtResource("2_6k1l5")]
 unique_name_in_owner = true
