@@ -5,7 +5,9 @@
 
 [node name="Game" type="Node"]
 
-[node name="Map" parent="." instance=ExtResource("1_uhod8")]
+[node name="World" type="Node" parent="."]
+
+[node name="Map" parent="World" instance=ExtResource("1_uhod8")]
 
 [node name="Player" parent="." instance=ExtResource("2_6k1l5")]
 unique_name_in_owner = true
