@@ -36,50 +36,38 @@ func _apply_friction(amount: float):
 	else:
 		velocity = Vector2.ZERO
 
-enum Direction {
-	BACK,
-	FORWARD,
-	LEFT,
-	RIGHT
-}
-
-@export
-var last_direction = Direction.BACK
+var last_direction = SIDE_BOTTOM
 
 func direction_vec():
 	match last_direction:
-		Direction.BACK:
+		SIDE_BOTTOM:
 			return Vector2(0.0, 1.0)
-		Direction.FORWARD:
+		SIDE_TOP:
 			return Vector2(0.0, -1.0)
-		Direction.RIGHT:
+		SIDE_RIGHT:
 			return Vector2(1.0, 0.0)
-		Direction.LEFT:
+		SIDE_LEFT:
 			return Vector2(-1.0, 0.0)
 
 func _play_axis_move_animation():
 	if axis.y > 0:
-		last_direction = Direction.BACK
-		animator.play("walk_back")
+		last_direction = SIDE_BOTTOM
 	elif axis.y < 0:
-		last_direction = Direction.FORWARD
-		animator.play("walk_forward")
+		last_direction = SIDE_TOP
 	elif axis.x > 0:
-		last_direction = Direction.RIGHT
-		animator.play("walk_right")
+		last_direction = SIDE_RIGHT
 	elif axis.x < 0:
-		last_direction = Direction.LEFT
-		animator.play("walk_left")
+		last_direction = SIDE_LEFT
 
 func _play_direction_idle_animation():
 	match last_direction:
-		Direction.BACK:
+		SIDE_BOTTOM:
 			animator.play("idle_back")
-		Direction.FORWARD:
+		SIDE_TOP:
 			animator.play("idle_forward")
-		Direction.RIGHT:
+		SIDE_RIGHT:
 			animator.play("idle_right")
-		Direction.LEFT:
+		SIDE_LEFT:
 			animator.play("idle_left")
 
 func apply_movement(acceleration: Vector2):

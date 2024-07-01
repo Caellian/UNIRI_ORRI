@@ -8,6 +8,8 @@ Inspiration:
 - [Stardew Valley](https://www.stardewvalley.net/)
 - [Animal Crossing](https://animalcrossing.nintendo.com/)
 
+![screenshot of wip](./doc/screenshot_wip.png)
+
 ## 3rd Party Assets
 
 - [Sprout Lands](https://cupnooble.itch.io/sprout-lands-asset-pack) by

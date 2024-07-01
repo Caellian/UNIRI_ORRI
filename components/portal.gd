@@ -10,13 +10,14 @@ var target_map: String = ""
 func enter_direction():
 	var r = self.global_rotation
 	if r > PI * -0.25 and r < PI * 0.25:
-		return Player.Direction.FORWARD
+		return SIDE_TOP
 	elif r > PI * -0.75 and r < PI * -0.25:
-		return Player.Direction.LEFT
+		return SIDE_LEFT
 	elif r > PI * 0.25 and r < PI * 0.75:
-		return Player.Direction.RIGHT
+		return SIDE_RIGHT
 	else:
-		return Player.Direction.BACK
+		return SIDE_BOTTOM
+		
 
 func _load_target(map):
 	var target_scene = Globals.map_cache.get(map)
