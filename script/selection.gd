@@ -1,5 +1,5 @@
 extends Object
-class_name PlayerSelection
+class_name TileAction
 
 const ACTION_COLOR = Vector3(0.65,0.84,0.24)
 
@@ -27,3 +27,13 @@ func update_cursor(cursor: Sprite2D):
 		Kind.ACTION:
 			material.set_shader_parameter("color", ACTION_COLOR)
 			animator.play("static")
+
+func relative(location: Vector2) -> TileAction:
+	var relative = global_position - location
+	return TileAction.new(target, kind, relative)
+
+func tile_pos_global() -> Vector2i:
+	return Utils.to_grid(self.global_position)
+
+func tile_pos_relative(location: Vector2) -> Vector2i:
+	return Utils.to_grid(global_position - location)

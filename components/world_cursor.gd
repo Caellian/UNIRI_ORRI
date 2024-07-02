@@ -1,7 +1,6 @@
 extends Sprite2D
 class_name WorldCursor
 
-const TILE_SIZE = 16
 var player: Node2D
 
 @onready
@@ -50,13 +49,13 @@ func _update_selection(global_pos: Vector2):
 	for result in intersecting_areas:
 		if result.collider.is_in_group("interactable"):
 			interact_areas.append(result.collider)
-	_priority_sort(interact_areas)
+	# _priority_sort(interact_areas) # enable if multiple actionable tiles can overlap
 	
 	player.selection = null
 	
 	for it in interact_areas:
 		if it.has_method("get_selection_kind"):
-			player.selection = PlayerSelection.new(it, it.get_selection_kind(global_pos), global_pos)
+			player.selection = TileAction.new(it, it.get_selection_kind(global_pos), global_pos)
 			break
 	
 	self.visible = player.selection != null
@@ -71,8 +70,8 @@ func _update_selection(global_pos: Vector2):
 
 func _update_position():
 	var player_position = player.global_position
-	var global_tile_offset = player_position.posmod(TILE_SIZE) - Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
-	self.position = player.direction_vec() * TILE_SIZE - global_tile_offset
+	var global_tile_offset = player_position.posmod(Utils.TILE_SIZE) - Vector2(Utils.HALF_TILE, Utils.HALF_TILE)
+	self.position = player.direction_vec() * Utils.TILE_SIZE - global_tile_offset
 	if last_position != self.position:
 		_update_selection(player_position + self.position)
 	last_position = self.position

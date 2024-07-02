@@ -2,17 +2,21 @@ extends CharacterBody2D
 class_name Player
 
 @export
-var MAX_SPEED = 150
+var max_speed = 150
 @export
-var ACCELERATION  = 800
+var acceleration  = 800
 @export
-var FRICTION = 1600
+var friction = 1600
 
+@export
+var interaction_delay = 200
 var interaction_distance = 5
+var can_interact = true
+var can_move = true
 
-signal selection_changed(selection: PlayerSelection)
-signal interact(selection: PlayerSelection)
-var selection: PlayerSelection = null
+signal selection_changed(selection: TileAction)
+signal interact(selection: TileAction)
+var selection: TileAction = null
 
 @onready
 var axis = Vector2.ZERO
@@ -52,12 +56,16 @@ func direction_vec():
 func _play_axis_move_animation():
 	if axis.y > 0:
 		last_direction = SIDE_BOTTOM
+		animator.play("walk_back")
 	elif axis.y < 0:
 		last_direction = SIDE_TOP
+		animator.play("walk_forward")
 	elif axis.x > 0:
 		last_direction = SIDE_RIGHT
+		animator.play("walk_right")
 	elif axis.x < 0:
 		last_direction = SIDE_LEFT
+		animator.play("walk_left")
 
 func _play_direction_idle_animation():
 	match last_direction:
@@ -72,7 +80,7 @@ func _play_direction_idle_animation():
 
 func apply_movement(acceleration: Vector2):
 	velocity += acceleration
-	velocity = velocity.limit_length(MAX_SPEED)
+	velocity = velocity.limit_length(max_speed)
 	_play_axis_move_animation()
 
 var was_moving = false
@@ -80,13 +88,13 @@ func _move(delta: float):
 	axis = _update_input_axis()
 	
 	if axis == Vector2.ZERO:
-		_apply_friction(FRICTION * delta)
+		_apply_friction(friction * delta)
 		if was_moving:
 			_play_direction_idle_animation()
 			was_moving = false
 	else:
 		was_moving = true
-		apply_movement(axis * ACCELERATION * delta)
+		apply_movement(axis * acceleration * delta)
 	
 	move_and_slide()
 
@@ -113,19 +121,31 @@ func set_camera_bounds(bounds: Rect2):
 	camera.limit_right = bounds.size.x
 	camera.limit_bottom = bounds.size.y
 
-func can_interact(with: Node2D):
-	var distance_to_position = global_position.distance_to(with.global_position)
+func can_interact_with(node: Node2D):
+	var distance_to_position = global_position.distance_to(node.global_position)
 	return distance_to_position <= interaction_distance
 
+var interaction_block = 0
 func _update_interaction(delta):
-	if Input.is_action_pressed("interact"):
+	if !can_interact:
+		return
+	if selection != null and Input.is_action_pressed("interact"):
+		interaction_block = 100
 		interact.emit(selection)
 
-func _physics_process(delta: float):
-	_move(delta)
-	if selection != null:
-		_update_interaction(delta)
+func interact_for(duration: float):
+	interaction_block = max(interaction_block, duration)
+	can_move = false
 
+func _physics_process(delta: float):
+	if can_move:
+		_move(delta)
+	var could_interact = interaction_block == 0
+	interaction_block = max(0, interaction_block - delta*1000)
+	if interaction_block == 0:
+		if !could_interact:
+			can_move = true
+		_update_interaction(delta)
 
 func compute_map_bounds(map: Node):
 	var limits = Rect2(Vector2(0,0), Vector2(0,0))
