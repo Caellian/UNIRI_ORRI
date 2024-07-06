@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PlantResource" load_steps=2 format=3 uid="uid://yxth4ljfr8cb"]
+
+[ext_resource type="Script" path="res://components/plants/plant_resource.gd" id="1_dk2f5"]
+
+[resource]
+script = ExtResource("1_dk2f5")
+Name = "Plant"
+"Tile Size/Width" = 1
+"Tile Size/Height" = 1
+"Plant Kind" = 0

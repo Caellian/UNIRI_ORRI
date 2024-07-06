@@ -8,7 +8,9 @@ var game: Node = get_node("/root/Game")
 @onready
 var world: Node = get_node("/root/Game/World")
 @onready
-var player: CharacterBody2D = game.get_node("%Player")
+var player: Player = game.get_node("%Player")
+@onready
+var time: GameTime = game.get_node("%Time")
 
 var map_cache = {}
 

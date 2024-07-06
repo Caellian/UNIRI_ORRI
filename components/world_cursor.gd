@@ -1,7 +1,7 @@
 extends Sprite2D
 class_name WorldCursor
 
-var player: Node2D
+var player: Player
 
 @onready
 var animator: AnimationPlayer = %SelectionAnimator
@@ -62,11 +62,15 @@ func _update_selection(global_pos: Vector2):
 	if player.selection == null:
 		if last_selection != null:
 			player.selection_changed.emit(null)
+			last_selection.free()
 		return
 	
 	if last_selection != player.selection:
 		player.selection.update_cursor(self)
 		player.selection_changed.emit(player.selection)
+	
+	if last_selection != null:
+		last_selection.free()
 
 func _update_position():
 	var player_position = player.global_position

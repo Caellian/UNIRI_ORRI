@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://du032rvb7lx60" path="res://textures/tilesets/Grass.png" id="1_iu32l"]
 [ext_resource type="Texture2D" uid="uid://s1ogohqk17bn" path="res://textures/tilesets/Hills.png" id="2_xdjh4"]
-[ext_resource type="Texture2D" uid="uid://ck0rvckqga6go" path="res://textures/tilesets/Tilled_Dirt.png" id="3_hbrhk"]
+[ext_resource type="Texture2D" uid="uid://ck0rvckqga6go" path="res://textures/tilesets/Path.png" id="3_q6eu7"]
 [ext_resource type="Texture2D" uid="uid://pghu3jy8yyfx" path="res://textures/tilesets/Water.png" id="4_0sqt8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g5u8a"]
@@ -150,7 +150,7 @@ texture = ExtResource("2_xdjh4")
 10:6/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7xoer"]
-texture = ExtResource("3_hbrhk")
+texture = ExtResource("3_q6eu7")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0

@@ -12,3 +12,12 @@ script = ExtResource("1_vtg3l")
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_sivri")
 debug_color = Color(0.64, 0.368213, 0.0576, 0.419608)
+
+[node name="Display" type="TileMap" parent="."]
+position = Vector2(8, 8)
+format = 2
+layer_0/name = "Soil"
+layer_1/name = "SoilEffect"
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Plant"
+layer_2/tile_data = PackedInt32Array()

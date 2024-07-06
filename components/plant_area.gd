@@ -3,6 +3,8 @@ extends Area2D
 
 @onready
 var surface: CollisionShape2D = $Surface
+@onready
+var display: TileMap = $Display
 
 @export
 var size: Vector2i = Vector2i(1, 1):
@@ -16,13 +18,13 @@ func align_area():
 	surface.shape.size = size * Utils.TILE_SIZE
 	surface.position = Utils.round_to_tile(self.global_position) - self.global_position
 	surface.position += Vector2(size * Utils.HALF_TILE)
+	display.position = surface.position
 
 func _ready():
 	align_area()
-	var player_selection = get_node("/root/Game/%Player")
-	player_selection.interact.connect(_on_interact)
+	Globals.player.interact.connect(_on_interact)
 
-func position_cell(pos):
+func position_cell(pos) -> Vector2i:
 	var val = pos
 	if val is TileAction:
 		val = pos.global_position
@@ -39,7 +41,7 @@ func _physics_process(delta):
 
 func _on_interact(selection: TileAction):
 	var tile = position_cell(selection.global_position)
-	print(tile)
+	#Globals.player.inventory.active
 
 func tile_action(location):
 	pass

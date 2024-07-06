@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://v8gd2blbxuxm"]
+
+[ext_resource type="Script" path="res://components/items/item_resource.gd" id="1_x8hny"]
+
+[resource]
+script = ExtResource("1_x8hny")
+name = "Potato"
+description = ""

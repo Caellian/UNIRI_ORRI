@@ -95,3 +95,34 @@ static func clear_children(node: Node):
 	for n in node.get_children():
 		node.remove_child(n)
 		n.queue_free() 
+
+class ResourceFileIterator:
+	var path: String
+	var dir: DirAccess
+	var file_name: String = ""
+
+	func _init(path: String):
+		self.path = path
+		self.dir = DirAccess.open(path)
+
+	func should_continue():
+		return self.file_name != ""
+
+	func _iter_init(arg):
+		if !dir:
+			push_error("unable to open resource path: " + self.path)
+			return false
+		self.dir.list_dir_begin()
+		self.file_name = dir.get_next()
+		while self.file_name != "" and !self.file_name.ends_with(".tres"):
+			self.file_name = self.dir.get_next()
+		return self.file_name != ""
+
+	func _iter_next(arg):
+		self.file_name = self.dir.get_next()
+		while self.file_name != "" and !self.file_name.ends_with(".tres"):
+			self.file_name = self.dir.get_next()
+		return self.file_name != ""
+
+	func _iter_get(arg):
+		return self.file_name

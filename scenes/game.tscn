@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://8t6020m32s5u"]
+[gd_scene load_steps=7 format=3 uid="uid://8t6020m32s5u"]
 
 [ext_resource type="PackedScene" uid="uid://c33khjo4phyqk" path="res://scenes/world/farm.tscn" id="1_uhod8"]
 [ext_resource type="PackedScene" uid="uid://c2ms70qpkqtjh" path="res://components/player.res" id="2_6k1l5"]
+[ext_resource type="Script" path="res://scenes/time.gd" id="3_1c8sw"]
+[ext_resource type="Gradient" uid="uid://bycq43inlaj3n" path="res://textures/day_transition.tres" id="4_cc48l"]
+[ext_resource type="PackedScene" uid="uid://dwag468kxnw16" path="res://scenes/ui/hud.tscn" id="4_r8hlr"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_20agk"]
+gradient = ExtResource("4_cc48l")
 
 [node name="Game" type="Node"]
 
@@ -12,3 +18,12 @@
 [node name="Player" parent="." instance=ExtResource("2_6k1l5")]
 unique_name_in_owner = true
 position = Vector2(206, 161)
+
+[node name="Time" type="CanvasModulate" parent="."]
+unique_name_in_owner = true
+color = Color(0.960793, 0.965075, 0.897723, 1)
+script = ExtResource("3_1c8sw")
+NIGHT_COLOR = Color(0.0784, 0.0784, 0.28, 1)
+DAY_TRANSITION = SubResource("GradientTexture1D_20agk")
+
+[node name="HUD" parent="." instance=ExtResource("4_r8hlr")]

@@ -12,6 +12,12 @@ var target = null
 var kind = null
 var global_position = null
 
+var position:
+	get:
+		if target == null or !target is Node2D:
+			return null
+		return target.global_position - global_position
+
 func _init(target, kind: Kind, global_position: Vector2):
 	self.target = target
 	self.kind = kind
@@ -28,12 +34,9 @@ func update_cursor(cursor: Sprite2D):
 			material.set_shader_parameter("color", ACTION_COLOR)
 			animator.play("static")
 
-func relative(location: Vector2) -> TileAction:
+func to_relative(location: Vector2) -> TileAction:
 	var relative = global_position - location
 	return TileAction.new(target, kind, relative)
 
-func tile_pos_global() -> Vector2i:
-	return Utils.to_grid(self.global_position)
-
-func tile_pos_relative(location: Vector2) -> Vector2i:
-	return Utils.to_grid(global_position - location)
+func tile_pos(relative: Vector2 = Vector2.ZERO) -> Vector2i:
+	return Utils.to_grid(self.global_position - relative)
