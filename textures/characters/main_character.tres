@@ -1,7 +1,7 @@
 [gd_resource type="TileSet" load_steps=5 format=3 uid="uid://sqceajyid1xu"]
 
 [ext_resource type="Texture2D" uid="uid://q87tam31mg44" path="res://textures/characters/panda_movement.png" id="1_v86gh"]
-[ext_resource type="Texture2D" uid="uid://bkdvgewqo0k4q" path="res://textures/characters/Basic Charakter Actions.png" id="2_spx0l"]
+[ext_resource type="Texture2D" uid="uid://bkdvgewqo0k4q" path="res://textures/characters/Basic Character Actions.png" id="2_8ai8k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a2hnb"]
 texture = ExtResource("1_v86gh")
@@ -23,7 +23,7 @@ texture = ExtResource("1_v86gh")
 10:10/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vrcu8"]
-texture = ExtResource("2_spx0l")
+texture = ExtResource("2_8ai8k")
 1:0/0 = 0
 4:0/0 = 0
 1:1/0 = 0

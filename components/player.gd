@@ -19,15 +19,20 @@ signal interact(selection: TileAction)
 var selection: TileAction = null
 
 @onready
-var axis = Vector2.ZERO
+var axis: Vector2 = Vector2.ZERO
 @onready
-var animator = %WalkAnimator
+var animator: AnimationPlayer = %WalkAnimator
 @onready
-var camera = %Camera
+var camera: Camera2D = %Camera
+
+@onready
+var player_sound: PlayerSound = %PlayerSound
+
+var inventory: Inventory = Inventory.new()
 
 func _ready():
-	Globals.map_change.connect(_on_map_change)
-	_on_map_change(Globals.world.get_child(0))
+	Globals.scene_manager.map_change.connect(_on_map_change)
+	_on_map_change(Globals.scene_manager.current_map)
 
 func _update_input_axis():
 	axis.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
@@ -99,13 +104,14 @@ func _move(delta: float):
 	move_and_slide()
 
 func teleport_to(position: Vector2):
+	self.reset_physics_interpolation()
 	self.global_position = position
 
-func teleport_to_location(name: String):
+func teleport_to_location_name(name: String):
 	var locations = get_tree().get_nodes_in_group("location")
 	# TODO: Rotate per location requirements
 	for it in locations:
-		if it.name == name:
+		if it.name.to_snake_case() == name:
 			teleport_to((it as Node2D).global_position)
 			return
 	for it in locations:
@@ -114,8 +120,15 @@ func teleport_to_location(name: String):
 			return
 	print_debug("Player unable to find location: " + name)
 
+func teleport_to_location(location):
+	if typeof(location) == TYPE_STRING:
+		teleport_to_location_name(location)
+	elif typeof(location) == TYPE_VECTOR2:
+		teleport_to(location)
+	else:
+		push_error("invalid location parameter type: " + type_string(typeof(location)))
+
 func set_camera_bounds(bounds: Rect2):
-	print("new_limits " + str(bounds))
 	camera.limit_left = bounds.position.x
 	camera.limit_top = bounds.position.y
 	camera.limit_right = bounds.size.x
@@ -149,8 +162,8 @@ func _physics_process(delta: float):
 
 func compute_map_bounds(map: Node):
 	var limits = Rect2(Vector2(0,0), Vector2(0,0))
-	for child in map.get_children():
-		if child == null or !child is TileMap or child.tile_set == null:
+	for child in get_tree().get_nodes_in_group("terrain"):
+		if child == null or !child is TileMapLayer or child.tile_set == null:
 			continue
 		
 		var child_limits = child.get_used_rect()
@@ -159,8 +172,10 @@ func compute_map_bounds(map: Node):
 		limits.position.y = minf(limits.position.y, child_limits.position.y * cell_size.y)
 		limits.end.x = maxf(limits.end.x, child_limits.end.x * cell_size.x)
 		limits.end.y = maxf(limits.end.y, child_limits.end.y * cell_size.y)
-	
 	return limits
 
-func _on_map_change(new_map):
+func _on_map_change(new_map: Node2D):
+	if new_map == null:
+		set_camera_bounds(Rect2(Vector2(0,0), Vector2(0,0)))
+		return
 	set_camera_bounds(compute_map_bounds(new_map))

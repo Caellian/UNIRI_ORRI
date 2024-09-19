@@ -1,0 +1,55 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://pv7gd02g3sup"]
+
+[ext_resource type="Texture2D" uid="uid://c4jwtrwa8ncg1" path="res://textures/ui/components/button_rectangle_depth_line.png" id="1_qiobe"]
+[ext_resource type="Texture2D" uid="uid://csp4tefp0k5b8" path="res://textures/ui/components/button_rectangle_depth_border.png" id="2_ds25y"]
+[ext_resource type="Texture2D" uid="uid://ouap1l8hkbfr" path="res://textures/ui/components/button_rectangle_depth_gradient.png" id="3_42qxp"]
+[ext_resource type="Texture2D" uid="uid://cct5034klny2i" path="res://textures/ui/components/button_rectangle_depth_flat.png" id="4_s6f6c"]
+[ext_resource type="Texture2D" uid="uid://cyf5pf1mpwy5m" path="res://textures/ui/components/button_rectangle_depth_gloss.png" id="5_mjkmf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wp3f2"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 16.0
+content_margin_bottom = 23.0
+texture = ExtResource("1_qiobe")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_isrt6"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 16.0
+content_margin_bottom = 23.0
+texture = ExtResource("2_ds25y")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l2sxr"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 16.0
+content_margin_bottom = 23.0
+texture = ExtResource("3_42qxp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4jrxu"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 16.0
+content_margin_bottom = 23.0
+texture = ExtResource("4_s6f6c")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6hsk5"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 16.0
+content_margin_bottom = 23.0
+texture = ExtResource("5_mjkmf")
+
+[resource]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_disabled_color = Color(0, 0, 0, 0.5)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/styles/disabled = SubResource("StyleBoxTexture_wp3f2")
+Button/styles/focus = SubResource("StyleBoxTexture_isrt6")
+Button/styles/hover = SubResource("StyleBoxTexture_l2sxr")
+Button/styles/normal = SubResource("StyleBoxTexture_4jrxu")
+Button/styles/pressed = SubResource("StyleBoxTexture_6hsk5")

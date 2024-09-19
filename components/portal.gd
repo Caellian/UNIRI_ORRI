@@ -1,4 +1,5 @@
 extends Node2D
+class_name Portal
 
 @export
 var portal_name: String = "portal"
@@ -17,16 +18,15 @@ func enter_direction():
 		return SIDE_RIGHT
 	else:
 		return SIDE_BOTTOM
-		
 
 func _load_target(map):
-	var target_scene = Globals.map_cache.get(map)
+	var target_scene = Globals.scene_manager.map_cache.get(map)
 	if target_scene == null:
 		target_scene = ResourceLoader.load("res://scenes/world/" + map + ".tscn", "", ResourceLoader.CACHE_MODE_REUSE)
 		if target_scene == null:
 			print_debug("Unable to load scene: " + map)
 			return
-		Globals.map_cache[map] = target_scene
+		Globals.scene_manager.map_cache[map] = target_scene
 
 func _ready():
 	# Preload target scene
@@ -45,7 +45,7 @@ func _physics_process(delta):
 		return
 	var player_direction = inside.last_direction
 	if player_direction == enter_direction():
-		Globals.enter_map(target_map, target_location)
+		Globals.scene_manager.enter_map(target_map, target_location)
 
 func get_location_name():
 	return portal_name

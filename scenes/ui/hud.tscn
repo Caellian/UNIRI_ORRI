@@ -1,26 +1,48 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwag468kxnw16"]
+[gd_scene load_steps=4 format=3 uid="uid://dwag468kxnw16"]
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_d852u"]
+[ext_resource type="Texture2D" uid="uid://ddi3rosago5es" path="res://textures/ui/coin.png" id="2_8luhx"]
+[ext_resource type="PackedScene" uid="uid://b1uf8pi3woenr" path="res://components/ui/hotbar.tscn" id="3_30rmv"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_d852u")
 
-[node name="Control" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TimeContainer" type="MarginContainer" parent="."]
+offset_right = 70.0
+offset_bottom = 55.0
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Time" type="Label" parent="Control/VBoxContainer"]
+[node name="Time" type="Label" parent="TimeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "TIME"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Gold" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "GOLD"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_8luhx")
+
+[node name="Hotbar" parent="." instance=ExtResource("3_30rmv")]
+unique_name_in_owner = true

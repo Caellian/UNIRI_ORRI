@@ -9,19 +9,37 @@ var collide_filled = false
 @export
 var debug_color = Color("0099b3", 0.45);
 
+@onready
+var layers: Array[TileMapLayer] = _collect_layers()
+
 # TODO: Corners get filled in when fill_outer_bounds is false
 # append_outer_borders strategy should be used instead to allow the area to
 # be traversible
 
-var parent: TileMap
+@onready
+var used_rect: Rect2i = _compute_used_rect()
+
+func _collect_layers() -> Array[TileMapLayer]:
+	var result: Array[TileMapLayer] = []
+	for node in get_tree().get_nodes_in_group("terrain"):
+		if node != null and node is TileMapLayer:
+			result.push_back(node)
+	return result
+
+func _compute_used_rect():
+	var result = Rect2i(0, 0, 0, 0)
+	for layer in layers:
+		result = result.merge(layer.get_used_rect())
+	print_debug("new bounds")
+	return result
 
 func _get_configuration_warnings():
 	return null
 
 func append_outer_fills(visited: Array[Vector2i] = []) -> Array[Vector2i]:
-	var bounds = parent.get_used_rect()
-	bounds.position *= parent.tile_set.tile_size
-	bounds.size *= parent.tile_set.tile_size
+	var bounds = Rect2i(used_rect)
+	bounds.position *= layers[0].tile_set.tile_size
+	bounds.size *= layers[0].tile_set.tile_size
 	
 	var top = CollisionShape2D.new()
 	top.shape = WorldBoundaryShape2D.new()
@@ -54,15 +72,15 @@ func append_outer_fills(visited: Array[Vector2i] = []) -> Array[Vector2i]:
 	return []
 
 func is_tile_empty(pos: Vector2i):
-	for layer in range(0, parent.get_layers_count()):
-		if parent.get_cell_tile_data(layer, pos) != null:
+	for layer in layers:
+		if layer.get_cell_tile_data(pos) != null:
 			return collide_filled
 	return !collide_filled
 
 func append_outer_borders(visited: Array[Vector2i] = []) -> Array[Vector2i]:
-	var bounds = parent.get_used_rect()
-	var ts = parent.tile_set.tile_size
-	var bound_coods = parent.get_used_rect()
+	var bounds = Rect2i(used_rect)
+	var ts = layers[0].tile_set.tile_size
+	var bound_coods = Rect2i(used_rect)
 	bound_coods.position *= ts
 	bound_coods.size *= ts
 	
@@ -139,8 +157,8 @@ func append_outer_borders(visited: Array[Vector2i] = []) -> Array[Vector2i]:
 
 # 2D greedy meshing
 func append_edge_bounds(visited: Array[Vector2i] = []):
-	var bounds = parent.get_used_rect()
-	var ts = parent.tile_set.tile_size
+	var bounds = Rect2i(used_rect)
+	var ts = layers[0].tile_set.tile_size
 	
 	var y = bounds.position.y
 	var x = bounds.position.x
@@ -212,10 +230,10 @@ func rebuild_mesh():
 	append_edge_bounds(visited)
 
 func _ready():
-	parent = get_parent()
 	if Engine.is_editor_hint():
-		parent.changed.connect(rebuild_mesh)
-		parent.property_list_changed.connect(rebuild_mesh)
+		for layer in layers:
+			layer.changed.connect(rebuild_mesh)
+			layer.property_list_changed.connect(rebuild_mesh)
 		self.visibility_changed.connect(rebuild_mesh)
 		self.script_changed.connect(rebuild_mesh)
 		self.property_list_changed.connect(rebuild_mesh)

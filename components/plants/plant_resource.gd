@@ -33,6 +33,15 @@ enum Kind {
 }
 
 var kind: Kind = Kind.ROOT
+var growth_stages: Array[GrowthStage] = []
+
+class GrowthStage:
+	extends Resource
+	var name: String
+	var drops: Array[DropGenerator] = []
+	
+	func _init(name: String):
+		self.name = name
 
 func _get_property_list():
 	var ret: Array[Dictionary] = []
@@ -102,6 +111,11 @@ func _get_property_list():
 		"type": TYPE_NIL,
 		"usage": PROPERTY_USAGE_CATEGORY
 	})
+	ret.append({
+		"name": "Growth Stages",
+		"type": TYPE_ARRAY,
+		"hint_string": "growth_stages"
+	})
 	return ret
 
 func _set(prop_name: StringName, val) -> bool:
@@ -132,6 +146,8 @@ func _set(prop_name: StringName, val) -> bool:
 			self.product_min = clamp(val, 0, self.product_max)
 		"Product Amount/Max":
 			self.product_max = clamp(val, self.product_min, 32)
+		"Growth Stages":
+			self.growth_stages = val
 		_:
 			return false
 	return true
@@ -160,4 +176,6 @@ func _get(prop_name: StringName):
 			return self.product_min
 		"Product Amount/Max":
 			return self.product_max
+		"Growth Stages":
+			return self.growth_stages
 	return null

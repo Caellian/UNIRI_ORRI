@@ -1,0 +1,153 @@
+[gd_scene load_steps=5 format=3 uid="uid://dxrqxg6f7c2ar"]
+
+[ext_resource type="Texture2D" uid="uid://bmkoma4uylxul" path="res://textures/ui/settings_bg.png" id="1_rce76"]
+[ext_resource type="Theme" uid="uid://pv7gd02g3sup" path="res://components/ui/default_theme.tres" id="2_aaqxy"]
+
+[sub_resource type="GDScript" id="GDScript_6bg5q"]
+script/source = "extends CanvasLayer
+
+@onready
+var scene_manager: SceneManager = get_node(\"/root/Game/SceneManager\")
+
+@onready
+var music_slider: HSlider = %MusicSlider
+@onready
+var sfx_slider: HSlider = %SFXSlider
+@onready
+var master_vol_slider: HSlider = %MasterVolumeSlider
+
+enum AudioBus {
+	MASTER,
+	MUSIC,
+	SFX,
+}
+
+var audio_bus_indices: Dictionary = {}
+
+func _handle_audio_change(bus: AudioBus, value: float):
+	AudioServer.set_bus_volume_db(audio_bus_indices[bus], linear_to_db(value))
+
+func _query_audio_value(bus: AudioBus) -> float:
+	return db_to_linear(AudioServer.get_bus_volume_db(audio_bus_indices[bus]))
+
+func _on_master_volume_value_changed(value: float):
+	_handle_audio_change(AudioBus.MASTER, value)
+	Settings.instance.master_volume = value
+
+func _on_music_value_changed(value: float):
+	_handle_audio_change(AudioBus.MUSIC, value)
+	Settings.instance.music_volume = value
+
+func _on_sfx_value_changed(value: float):
+	_handle_audio_change(AudioBus.SFX, value)
+	Settings.instance.sfx_volume = value
+
+func _ready() -> void:
+	var settings = Settings.instance
+	audio_bus_indices[AudioBus.MASTER] = AudioServer.get_bus_index(\"Master\")
+	master_vol_slider.value = settings.master_volume
+	audio_bus_indices[AudioBus.MUSIC] = AudioServer.get_bus_index(\"Music\")
+	music_slider.value = settings.music_volume
+	audio_bus_indices[AudioBus.SFX] = AudioServer.get_bus_index(\"SFX\")
+	sfx_slider.value = settings.sfx_volume
+
+func _on_save_button_pressed():
+	# save settings that can't be updated on the fly
+	Settings.save()
+	scene_manager.close_screen()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iadgt"]
+bg_color = Color(0, 0, 0, 0.67451)
+
+[node name="SettingsMenu" type="CanvasLayer"]
+script = SubResource("GDScript_6bg5q")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_rce76")
+stretch_mode = 1
+
+[node name="ColorRect" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.5
+offset_top = -11.5
+offset_right = 81.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iadgt")
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="GridContainer" type="GridContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 5
+columns = 2
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="Label2" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="Label3" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="ColorRect/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+theme = ExtResource("2_aaqxy")
+text = "Save & Close"
+
+[connection signal="value_changed" from="ColorRect/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_value_changed"]
+[connection signal="value_changed" from="ColorRect/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_value_changed"]
+[connection signal="value_changed" from="ColorRect/MarginContainer/VBoxContainer/GridContainer/MasterVolumeSlider" to="." method="_on_master_volume_value_changed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/CenterContainer/SaveButton" to="." method="_on_save_button_pressed"]

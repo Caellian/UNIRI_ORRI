@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://dspvy5iktpmh8"]
+
+[ext_resource type="Script" path="res://addons/inspector/drop_curve_edit.gd" id="1_2p06j"]
+
+[sub_resource type="GDScript" id="GDScript_y05ys"]
+script/source = "@tool
+extends Control
+
+@export
+var padding = 15
+
+@onready
+var curve_edit = get_parent_control()
+
+var accent_color = Color.LIGHT_SEA_GREEN
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func _draw():
+	var dim = self.get_rect()
+	var content_area = Rect2(Vector2(padding, 0), Vector2(dim.size.x - padding, dim.size.y - padding))
+	draw_line(content_area.position, Vector2(padding, dim.size.y - padding), accent_color)
+	draw_line(Vector2(padding, dim.size.y - padding), content_area.end, accent_color)
+"
+
+[node name="CurveEdit" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2p06j")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CapLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Max drops:"
+
+[node name="MaxValue" type="SpinBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 1.0
+
+[node name="Display" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 3
+script = SubResource("GDScript_y05ys")

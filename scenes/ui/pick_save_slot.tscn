@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://bafksw17qoomk"]
+
+[ext_resource type="Texture2D" uid="uid://bdamr0dx4pkif" path="res://textures/ui/main_menu_bg.jpg" id="1_vabqr"]
+[ext_resource type="PackedScene" uid="uid://c45pxv8wdpi87" path="res://components/ui/save_slot.tscn" id="2_ji8b7"]
+
+[node name="PickSaveSlot" type="CanvasLayer"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_vabqr")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+
+[node name="Slot1" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_ji8b7")]
+layout_mode = 2
+
+[node name="Slot2" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_ji8b7")]
+layout_mode = 2
+
+[node name="Slot3" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_ji8b7")]
+layout_mode = 2
+
+[node name="Slot4" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_ji8b7")]
+layout_mode = 2

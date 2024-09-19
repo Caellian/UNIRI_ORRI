@@ -1,29 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://8t6020m32s5u"]
+[gd_scene load_steps=8 format=3 uid="uid://8t6020m32s5u"]
 
-[ext_resource type="PackedScene" uid="uid://c33khjo4phyqk" path="res://scenes/world/farm.tscn" id="1_uhod8"]
 [ext_resource type="PackedScene" uid="uid://c2ms70qpkqtjh" path="res://components/player.res" id="2_6k1l5"]
 [ext_resource type="Script" path="res://scenes/time.gd" id="3_1c8sw"]
 [ext_resource type="Gradient" uid="uid://bycq43inlaj3n" path="res://textures/day_transition.tres" id="4_cc48l"]
 [ext_resource type="PackedScene" uid="uid://dwag468kxnw16" path="res://scenes/ui/hud.tscn" id="4_r8hlr"]
+[ext_resource type="Script" path="res://script/scene_manager.gd" id="6_lcg6k"]
+[ext_resource type="AudioStream" uid="uid://fn5u5168cgqb" path="res://sound/demo/forest_walk.mp3" id="6_qj6di"]
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_20agk"]
 gradient = ExtResource("4_cc48l")
 
 [node name="Game" type="Node"]
 
-[node name="World" type="Node" parent="."]
+[node name="World" type="Node2D" parent="."]
+process_mode = 4
+visible = false
 
-[node name="Map" parent="World" instance=ExtResource("1_uhod8")]
-
-[node name="Player" parent="." instance=ExtResource("2_6k1l5")]
+[node name="Player" parent="World" instance=ExtResource("2_6k1l5")]
 unique_name_in_owner = true
-position = Vector2(206, 161)
 
-[node name="Time" type="CanvasModulate" parent="."]
+[node name="Time" type="CanvasModulate" parent="World"]
 unique_name_in_owner = true
 color = Color(0.960793, 0.965075, 0.897723, 1)
 script = ExtResource("3_1c8sw")
 NIGHT_COLOR = Color(0.0784, 0.0784, 0.28, 1)
 DAY_TRANSITION = SubResource("GradientTexture1D_20agk")
 
-[node name="HUD" parent="." instance=ExtResource("4_r8hlr")]
+[node name="HUD" parent="World" instance=ExtResource("4_r8hlr")]
+unique_name_in_owner = true
+visible = false
+
+[node name="UI" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_qj6di")
+volume_db = -14.0
+bus = &"Music"
+
+[node name="SceneManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_lcg6k")

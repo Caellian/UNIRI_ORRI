@@ -48,7 +48,25 @@ class TimeInfo:
 	var day: int
 	var season: Season
 	var year: int
+
+	static func from_dict(value: Dictionary) -> TimeInfo:
+		var result = TimeInfo.new()
+		result.minute = value["minute"]
+		result.hour = value["hour"]
+		result.day = value["day"]
+		result.season = value["season"]
+		result.year = value["year"]
+		return result
 	
+	func to_dict() -> Dictionary:
+		return {
+			"minute": self.minute,
+			"hour": self.hour,
+			"day": self.day,
+			"season": self.season,
+			"year": self.year,
+		}
+
 func time_to_ms(time: TimeInfo) -> int:
 	return (time.hour * MINUTES_PER_HOUR + time.minute) * MINUTE_DURATION
 
